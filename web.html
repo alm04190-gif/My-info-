@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PARVEZ | Cyber Security & Bot Architecture</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #050505;
+            --card-bg: rgba(13, 17, 23, 0.7);
+            --text-color: #ffffff;
+            --primary-glow: #00d2ff;
+            --secondary-glow: #9d50bb;
+            --terminal-green: #00ff41;
+            --btn-bg: #111;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f0f2f5;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-color: #1a1a1a;
+            --btn-bg: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            transition: 0.3s;
+            overflow-x: hidden;
+            cursor: pointer;
+        }
+
+        #matrixCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        .header {
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(15px);
+            position: fixed;
+            width: 100%;
+            top: 0; z-index: 1000;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 1.4rem;
+            color: var(--primary-glow);
+        }
+
+        .profile-section { padding-top: 150px; text-align: center; }
+        
+        .profile-img-wrapper {
+            width: 180px; height: 180px;
+            margin: 0 auto;
+            border-radius: 50%;
+            padding: 6px;
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            box-shadow: 0 0 40px rgba(0, 210, 255, 0.4);
+        }
+
+        .profile-img {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--bg-color);
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .terminal-box {
+            background: #000;
+            border-radius: 12px;
+            padding: 20px;
+            border-top: 25px solid #1a1a1a;
+            color: var(--terminal-green);
+            font-family: 'Courier New', monospace;
+        }
+
+        .info-item {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: var(--primary-glow);
+        }
+        .info-item span { color: var(--text-color); font-weight: bold; }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            background: var(--btn-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: 0.3s;
+        }
+        .social-btn:hover {
+            transform: scale(1.03);
+            background: var(--primary-glow);
+            color: #000;
+        }
+        .social-btn i { font-size: 1.6rem; margin-right: 15px; }
+
+        .hobby-tag {
+            display: inline-block;
+            background: rgba(0, 210, 255, 0.15);
+            padding: 8px 18px;
+            border-radius: 50px;
+            margin: 5px;
+            border: 1px solid var(--primary-glow);
+        }
+
+        .section-title {
+            font-weight: 800;
+            margin: 50px 0 25px;
+            color: var(--primary-glow);
+            text-align: center;
+        }
+
+        .music-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            background: rgba(0, 210, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: var(--primary-glow);
+            z-index: 2000;
+            animation: blink 2s infinite;
+            border: 1px solid var(--primary-glow);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.9; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.3; transform: translateX(-50%) scale(0.95); }
+        }
+    </style>
+</head>
+<body id="mainBody">
+
+    <canvas id="matrixCanvas"></canvas>
+
+    <audio id="quranAudio" loop>
+        <source src="https://server11.mp3quran.net/yasser/023.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-hint" id="mHint">
+        <i class="fas fa-hand-pointer"></i> Tap anywhere to play Surah Al-Mu'minun 🌙
+    </div>
+
+    <header class="header">
+        <div class="fw-bold fs-4">PARVEZ STORE</div>
+        <div class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></div>
+    </header>
+
+    <div class="container">
+        <section class="profile-section">
+            <div class="profile-img-wrapper" data-aos="zoom-in">
+                <img src="profile.png" alt="Parvez" class="profile-img">
+            </div>
+            <h1 class="mt-4 fw-bold">Parvez ✓</h1>
+            <p class="opacity-75">Cyber Security Researcher & Full-Stack Bot Architect</p>
+        </section>
+
+        <div class="row justify-content-center my-4">
+            <div class="col-md-9" data-aos="fade-up">
+                <div class="terminal-box">
+                    <span id="typewriter"></span><span class="cursor">_</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center my-5">
+            <div class="col-md-9">
+                <div class="content-card text-end" style="border-right: 5px solid var(--primary-glow);" data-aos="fade-right">
+                    <h3 style="color: #ffd700;">إِنَّ مَعَ الْعُسْرِ يُسْرًا</h3>
+                    <p class="fs-5">"নিশ্চয়ই কষ্টের সাথেই স্বস্তি রয়েছে।"</p>
+                    <small class="opacity-50">— সূরা আলাম নাশরাহ [৬]</small>
+                </div>
+
+                <div class="content-card text-start mt-3" style="border-left: 5px solid #ff4b2b;" data-aos="fade-left">
+                    <h3 style="color: #ff4b2b;">أَكْثِرُوا ذِكْرَ هَاذِمِ اللَّذَّاتِ يَعْنِي الْمَوْتَ</h3>
+                    <p class="fs-5">"তোমরা স্বাদ ধ্বংসকারী (মৃত্যু)-কে বেশি বেশি স্মরণ করো।"</p>
+                    <small class="opacity-50">— সুনানে তিরমিযী (২৩০৭)</small>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Core Specializations</h2>
+        <div class="row g-4">
+            <div class="col-md-6" data-aos="fade-up">
+                <div class="content-card h-100">
+                    <i class="fas fa-network-wired fa-2x mb-3" style="color: var(--primary-glow);"></i>
+                    <h3>Advanced Tunneling</h3>
+                    <p class="opacity-75">Expert in Free Internet research using V2Ray, Shadowsocks, and custom SSL/UDP protocols.</p>
+                </div>
+            </div>
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="content-card h-100">
+                    <i class="fas fa-robot fa-2x mb-3" style="color: var(--secondary-glow);"></i>
+                    <h3>Bot Engineering</h3>
+                    <p class="opacity-75">Architecting high-performance Telegram automation and payment gateways.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">About Me</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-9" data-aos="fade-up">
+                <div class="content-card text-center">
+                    <p class="fs-5">"I am not an extraordinary person, I am an ordinary person, I have no special skills. I have many dreams... <strong>Insha Allah, one day I will fulfill all my dreams</strong>."</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">My Info</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-9" data-aos="fade-up">
+                <div class="content-card">
+                    <div class="info-item">==> MY NAME : <span>PARVEZ</span></div>
+                    <div class="info-item">==> MY AGE : <span>¯\_(ツ)_/¯ 19 Years</span></div>
+                    <div class="info-item">==> MY PHONE : <span>[8801625073156] ✓</span></div>
+                    <div class="info-item">==> MY HOME TOWN : <span>[RANGAMATI] ✓</span></div>
+                    <div class="info-item">==> MY EDUCATION : <span>10ᵗʰ</span></div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Social Media</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-9" data-aos="fade-up">
+                <a href="https://t.me/all_in_one_63" class="social-btn" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                    <div><strong>Main Channel</strong><br><small>Tech updates and resources.</small></div>
+                </a>
+                <a href="https://t.me/Parvez156" class="social-btn" target="_blank">
+                    <i class="fas fa-bullhorn"></i>
+                    <div><strong>Second Channel</strong><br><small>Updates and personal thoughts.</small></div>
+                </a>
+                <a href="https://t.me/Parvezhacker" class="social-btn" target="_blank">
+                    <i class="fas fa-user-shield"></i>
+                    <div><strong>Admin</strong><br><small>Direct contact with me.</small></div>
+                </a>
+                <a href="https://www.facebook.com/share/1PxsfCky9u/" class="social-btn" target="_blank">
+                    <i class="fab fa-facebook"></i>
+                    <div><strong>Facebook</strong><br><small>Personal profile.</small></div>
+                </a>
+            </div>
+        </div>
+
+        <h2 class="section-title">My Hobbies</h2>
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-9 text-center" data-aos="zoom-in">
+                <div class="content-card">
+                    <span class="hobby-tag">🛜 Tech</span>
+                    <span class="hobby-tag">🦢 Programming</span>
+                    <span class="hobby-tag">🌟 Gaming</span>
+                    <span class="hobby-tag">📸 Photography</span>
+                    <span class="hobby-tag">🎓 Book Reading</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        const audio = document.getElementById('quranAudio');
+        const mHint = document.getElementById('mHint');
+
+        document.body.addEventListener('click', function() {
+            audio.play().then(() => {
+                mHint.style.display = 'none';
+            }).catch(e => console.log("Audio play failed:", e));
+        }, { once: true });
+
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.querySelector('.theme-toggle i');
+            if (body.getAttribute('data-theme') === 'light') {
+                body.removeAttribute('data-theme');
+                icon.className = 'fas fa-moon';
+            } else {
+                body.setAttribute('data-theme', 'light');
+                icon.className = 'fas fa-sun';
+            }
+        }
+
+        const textArray = "$ sudo systemctl start parvez-os\n[LOADING] Repository: security-tools.v4\n[SUCCESS] Authentication Verified: PARVEZ_✓\n> Status: Expert Mode Active";
+        const typewriterElement = document.getElementById('typewriter');
+        let index = 0;
+        function playTyping() {
+            if (index < textArray.length) {
+                typewriterElement.textContent += textArray.charAt(index);
+                index++;
+                setTimeout(playTyping, 40);
+            }
+        }
+        window.onload = playTyping;
+
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const alphabet = '01';
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const rainDrops = Array.from({ length: columns }).fill(1);
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+            for (let i = 0; i < rainDrops.length; i++) {
+                const char = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(char, i * fontSize, rainDrops[i] * fontSize);
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) rainDrops[i] = 0;
+                rainDrops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        window.onresize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+    </script>
+</body>
+</html>

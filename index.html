@@ -3,507 +3,686 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parvez | E-Z.bio Style</title>
+    <title>All In One — Community</title>
     
+    <!-- Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    
+    <!-- Curated Multi-Font Pairing: Space Grotesk + Plus Jakarta Sans + Instrument Serif + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --bg-pure: #000000;
+            --surface-subtle: #07090e;
+            --border-dim: rgba(255, 255, 255, 0.08);
+            --sky-accent: #38bdf8;
+            --emerald-accent: #34d399;
+            --violet-accent: #a78bfa;
+            --amber-accent: #fbbf24;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: #000;
-            color: #fff;
-            overflow: hidden; /* Prevent scrolling */
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: var(--bg-pure);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* ========================================
-           1. TERMINAL PRELOADER (Black Screen)
-           ======================================== */
+        /* =========================================================
+           1. SENIOR-GRADE TERMINAL PRELOADER
+           ========================================================= */
         #preloader {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #050505;
+            inset: 0;
+            background-color: #000000;
             z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.8s ease-out;
+            padding: 20px;
+            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.65s;
         }
 
         .terminal-window {
-            width: 90%;
-            max-width: 500px;
-            background: #111;
-            border-radius: 10px;
-            border: 1px solid #333;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            width: 100%;
+            max-width: 510px;
+            background: #06080c;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 40px rgba(56, 189, 248, 0.04);
             overflow: hidden;
-            transform: scale(0.7);
+            transform: translateY(14px) scale(0.97);
             opacity: 0;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease-out;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
         }
 
-        .terminal-window.show-terminal {
-            transform: scale(1);
+        .terminal-window.active {
+            transform: translateY(0) scale(1);
             opacity: 1;
         }
 
         .terminal-header {
-            background: #222;
-            padding: 10px 15px;
+            background: #0c0f17;
+            padding: 11px 16px;
             display: flex;
-            gap: 8px;
             align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
         }
 
-        .mac-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .mac-dots {
+            display: flex;
+            gap: 7px;
+        }
+
+        .mac-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
         .mac-dot.red { background-color: #ff5f56; }
         .mac-dot.yellow { background-color: #ffbd2e; }
         .mac-dot.green { background-color: #27c93f; }
 
-        .terminal-body {
-            padding: 20px;
-            min-height: 200px;
+        .terminal-title {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            color: #00ff41;
+            font-size: 11px;
+            color: #64748b;
+            letter-spacing: 0.4px;
+        }
+
+        .terminal-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            color: var(--emerald-accent);
+            background: rgba(52, 211, 153, 0.1);
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .terminal-body {
+            padding: 20px 18px 18px;
+            min-height: 225px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
             line-height: 1.8;
-            white-space: pre-wrap; 
-        }
-
-        /* ========================================
-           2. MAIN WEBSITE (E-Z.BIO THEME)
-           ======================================== */
-        #main-content {
-            display: none;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transition: opacity 1.5s ease-in;
-        }
-
-        /* Background Video */
-        .bg-video {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            z-index: 1;
-            filter: brightness(0.5) blur(3px); 
-        }
-
-        /* The Main Glass Card */
-        .glass-container {
-            position: relative;
-            z-index: 10;
-            width: 90%;
-            max-width: 420px;
-            height: 85vh;
-            margin: auto;
-            background: rgba(20, 20, 20, 0.4);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            padding: 30px 20px;
+            color: #cbd5e1;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            overflow-y: auto;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            justify-content: space-between;
         }
 
-        .glass-container::-webkit-scrollbar { display: none; }
-        .glass-container { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .views-count {
-            align-self: flex-start;
-            font-size: 13px;
-            opacity: 0.8;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 10px;
-        }
-
-        .profile-pic {
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        .name {
-            font-size: 26px;
-            font-weight: 700;
+        .term-line {
             margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            word-break: break-word;
         }
 
-        .diamond-icon { color: #d8b4fe; font-size: 18px; margin-bottom: 5px; }
-
-        .bio-text {
-            text-align: center;
-            font-size: 14px;
-            line-height: 1.6;
-            opacity: 0.9;
-            margin-bottom: 15px;
+        .term-time {
+            color: #475569;
+            margin-right: 6px;
         }
 
-        /* Small Social Icons */
-        .small-socials {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        .small-socials a {
-            color: #fff;
-            font-size: 22px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-        .small-socials a:hover { transform: scale(1.15); text-shadow: 0 0 15px #fff; }
-
-        /* Channel Cards */
-        .channel-card {
-            width: 100%;
-            background: linear-gradient(135deg, rgba(76, 29, 149, 0.6), rgba(124, 58, 237, 0.4));
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.2s;
+        .term-prompt {
+            color: var(--sky-accent);
+            font-weight: 600;
         }
 
-        .channel-card:hover {
-            transform: scale(1.02);
-        }
-
-        .channel-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .channel-header img { 
-            width: 50px; height: 50px; 
-            border-radius: 50%; 
-            object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.2);
-        }
-        
-        .channel-info h4 { 
-            font-size: 16px; 
-            font-weight: 600; 
-            display: flex; 
-            align-items: center; 
-            gap: 5px; 
-        }
-        
-        .channel-info p { font-size: 12px; opacity: 0.7; }
-        .badge-verified { color: #a855f7; font-size: 14px; }
-        
-        .action-btn {
-            display: block;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            text-align: center;
-            padding: 12px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 14px;
+        .term-cmd {
+            color: #f8fafc;
             font-weight: 500;
-            transition: 0.3s;
-        }
-        .action-btn:hover { background: rgba(0, 0, 0, 0.8); }
-
-        /* Music Player */
-        .music-player {
-            width: 100%;
-            background: linear-gradient(135deg, rgba(88, 28, 135, 0.6), rgba(126, 34, 206, 0.4));
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            margin-top: 5px;
         }
 
-        .music-header {
+        .badge-info { color: var(--sky-accent); font-weight: 600; }
+        .badge-ok { color: var(--emerald-accent); font-weight: 600; }
+        .badge-auth { color: var(--amber-accent); font-weight: 600; }
+
+        .cursor {
+            display: inline-block;
+            width: 7px;
+            height: 14px;
+            background-color: var(--sky-accent);
+            vertical-align: middle;
+            margin-left: 4px;
+            animation: blink 0.8s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .term-footer {
+            margin-top: 16px;
+        }
+
+        .term-progress-meta {
             display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
+            justify-content: space-between;
+            font-size: 10.5px;
+            color: #64748b;
+            margin-bottom: 6px;
         }
-        .song-title { font-size: 13px; font-weight: 500; }
 
-        .progress-bar-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 11px;
-            margin-bottom: 15px;
-            opacity: 0.8;
-        }
-        .progress-line {
-            flex: 1;
+        .term-progress-wrap {
+            background: #111622;
+            border-radius: 4px;
             height: 4px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 5px;
-            position: relative;
-        }
-        .progress-line::after {
-            content: '';
-            position: absolute;
-            left: 0; top: -2px;
-            width: 30%; height: 8px;
-            background: #fff;
-            border-radius: 5px;
+            width: 100%;
+            overflow: hidden;
         }
 
-        .music-controls {
+        .term-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #0284c7, #38bdf8, #34d399);
+            transition: width 0.18s ease-out;
+        }
+
+        /* =========================================================
+           2. MAIN INTERFACE (PURE BLACK, LEFT-ALIGNED ARCHITECTURE)
+           ========================================================= */
+        #main-content {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 64px 24px 56px 24px;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        #main-content.visible {
+            opacity: 1;
+        }
+
+        /* Top Brand / Profile Section (Strictly Left-Aligned) */
+        .hero-section {
             display: flex;
-            justify-content: center;
-            gap: 25px;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            margin-bottom: 54px;
         }
-        .music-controls #play-btn { font-size: 24px; cursor: pointer; transition: 0.2s; }
-        .music-controls #play-btn:hover { transform: scale(1.2); text-shadow: 0 0 10px #fff; }
-        .music-controls i:not(#play-btn) { font-size: 18px; opacity: 0.6; }
 
-        /* ========================================
-           3. PARTICLE EFFECT (Click Animation)
-           ======================================== */
-        .sparkle {
-            position: absolute;
-            width: 6px; height: 6px;
-            background-color: #d8b4fe;
+        .logo-wrapper {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .channel-logo {
+            width: 86px;
+            height: 86px;
             border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            box-shadow: 0 0 10px #d8b4fe, 0 0 20px #fff;
-            animation: fallAnimation 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            object-fit: cover;
+            border: 1.5px solid rgba(255, 255, 255, 0.14);
+            background-color: #050505;
+            display: block;
         }
 
-        @keyframes fallAnimation {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        /* Metallic Silver / Grey Channel Name */
+        .channel-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 55%, #64748b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: #94a3b8;
+            margin-bottom: 18px;
         }
 
+        /* 3 Small Circular Transparent Buttons with Sky-Blue Logos */
+        .top-round-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .round-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--sky-accent);
+            font-size: 16px;
+            transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .round-btn:hover {
+            border-color: var(--sky-accent);
+            background: rgba(56, 189, 248, 0.08);
+            transform: translateY(-1px);
+        }
+
+        /* =========================================================
+           3. COMMUNITY SECTION (MULTI-FONT & COLOR HIERARCHY)
+           ========================================================= */
+        .community-section {
+            text-align: left;
+            margin-bottom: 56px;
+        }
+
+        .community-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 30px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.03em;
+            margin-bottom: 22px;
+        }
+
+        .community-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .m-line {
+            font-size: 15.5px;
+            line-height: 1.75;
+            font-weight: 400;
+            padding-left: 14px;
+            border-left: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Distinct color themes & typographic accents per line */
+        .m-line.line-1 {
+            color: #cbd5e1;
+            border-left-color: var(--sky-accent);
+        }
+
+        .m-line.line-2 {
+            color: #94a3b8;
+            border-left-color: var(--emerald-accent);
+        }
+
+        .m-line.line-3 {
+            color: #cbd5e1;
+            border-left-color: var(--violet-accent);
+        }
+
+        .m-line.line-4 {
+            color: #94a3b8;
+            border-left-color: var(--amber-accent);
+        }
+
+        /* Font & Color Utility Spans for Senior Editorial Feel */
+        .fw-bold-white {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .hl-sky {
+            font-weight: 600;
+            color: var(--sky-accent);
+        }
+
+        .hl-emerald {
+            font-weight: 600;
+            color: var(--emerald-accent);
+        }
+
+        .hl-violet {
+            font-weight: 600;
+            color: var(--violet-accent);
+        }
+
+        .hl-amber {
+            font-weight: 600;
+            color: var(--amber-accent);
+        }
+
+        .serif-italic {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-style: italic;
+            font-size: 18.5px;
+            letter-spacing: 0.01em;
+            color: #f1f5f9;
+        }
+
+        .mono-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #e2e8f0;
+        }
+
+        /* =========================================================
+           4. ENDING / FOOTER LINKS SECTION
+           ========================================================= */
+        .ending-links {
+            border-top: 1px solid var(--border-dim);
+            padding-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ending-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 11px 15px;
+            background: var(--surface-subtle);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .ending-row:hover {
+            border-color: rgba(56, 189, 248, 0.25);
+            background: #0b0e17;
+        }
+
+        .ending-left {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 13.5px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .ending-left i {
+            color: var(--sky-accent);
+            font-size: 15px;
+            width: 18px;
+            text-align: center;
+        }
+
+        .ending-sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-left: 4px;
+        }
+
+        .ending-right {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--sky-accent);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.18);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .ending-right:hover {
+            background: rgba(56, 189, 248, 0.16);
+            border-color: var(--sky-accent);
+        }
+
+        @media (max-width: 480px) {
+            #main-content {
+                padding: 46px 18px 44px 18px;
+            }
+            .ending-sub {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
 
+    <!-- 1. PROFESSIONAL REALISTIC TERMINAL PRELOADER -->
     <div id="preloader">
         <div class="terminal-window" id="term-window">
             <div class="terminal-header">
-                <div class="mac-dot red"></div>
-                <div class="mac-dot yellow"></div>
-                <div class="mac-dot green"></div>
+                <div class="mac-dots">
+                    <div class="mac-dot red"></div>
+                    <div class="mac-dot yellow"></div>
+                    <div class="mac-dot green"></div>
+                </div>
+                <div class="terminal-title">all-in-one@node-01: ~ (zsh)</div>
+                <div class="terminal-status">TLS 1.3</div>
             </div>
-            <div class="terminal-body" id="term-text"></div>
+            <div class="terminal-body">
+                <div id="term-output">
+                    <div class="term-line">
+                        <span class="term-prompt">root@all-in-one:~#</span> 
+                        <span class="term-cmd" id="typed-cmd"></span><span class="cursor" id="cmd-cursor"></span>
+                    </div>
+                </div>
+                <div class="term-footer">
+                    <div class="term-progress-meta">
+                        <span id="term-status-label">INITIALIZING KERNEL...</span>
+                        <span id="term-percent">0%</span>
+                    </div>
+                    <div class="term-progress-wrap">
+                        <div class="term-progress-bar" id="term-bar"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="main-content">
+    <!-- 2. MAIN WEBSITE CONTENT -->
+    <main id="main-content">
         
-        <video class="bg-video" autoplay loop muted playsinline>
-            <source src="bg-video.mp4" type="video/mp4">
-        </video>
-        
-        <div class="glass-container">
-            
-            <div class="views-count">
-                <i class="fas fa-eye"></i> 1337
+        <!-- Left-Aligned Brand Header -->
+        <section class="hero-section">
+            <div class="logo-wrapper">
+                <!-- Uses tg-pic.jpg if present, otherwise renders crisp All In One vector emblem -->
+                <img 
+                    src="tg-pic.jpg" 
+                    alt="All In One Logo" 
+                    class="channel-logo"
+                    onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2250%22 fill=%22%23050505%22/><path d=%22M50 22 L32 62 L40 62 L50 38 L60 62 L68 62 Z%22 fill=%22%23ffffff%22/><path d=%22M38 53 L64 42%22 stroke=%22%2338bdf8%22 stroke-width=%224%22 stroke-linecap=%22round%22/><text x=%2250%22 y=%2278%22 font-family=%22sans-serif%22 font-size=%228.5%22 font-weight=%22bold%22 fill=%22%23ffffff%22 text-anchor=%22middle%22 letter-spacing=%221.2%22>ALL IN ONE</text></svg>';"
+                >
             </div>
 
-            <img src="profile.jpg" alt="Parvez" class="profile-pic" onerror="this.src='https://i.ibb.co/6wD2t4h/default.jpg'">
-            
-            <h1 class="name">𝐏ᴀ֟፝ʀᴠᴇ𝐙 모</h1>
-            
-            <div class="diamond-icon"><i class="far fa-gem"></i></div>
-            
-            <p class="bio-text">
-                Always for her,<br>
-                Always with her 🤍
-            </p>
+            <!-- Silver / Grey Channel Name -->
+            <h1 class="channel-name">All In One</h1>
 
-            <div class="small-socials">
-                <a href="https://discord.com/" target="_blank"><i class="fab fa-discord"></i></a>
-                <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://t.me/Parvezhacker" target="_blank"><i class="fab fa-telegram"></i></a>
+            <!-- 3 Small Circular Transparent Buttons with Sky-Blue Logos -->
+            <div class="top-round-buttons">
+                <a href="https://t.me/all_in_one_63" target="_blank" rel="noopener noreferrer" class="round-btn" aria-label="Telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                </a>
+                <a href="https://www.facebook.com/share/1Bj3Q5M2VH/" target="_blank" rel="noopener noreferrer" class="round-btn" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://github.com/alm04190-gif?tab=overview&from=2026-10-01&to=2026-10-31" target="_blank" rel="noopener noreferrer" class="round-btn" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
             </div>
+        </section>
 
-            <div class="channel-card">
-                <div class="channel-header">
-                    <img src="tg-pic.jpg" alt="Telegram" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg'">
-                    <div class="channel-info">
-                        <h4>@all_in_one_63 <i class="fas fa-certificate badge-verified"></i></h4>
-                        <p>Main Telegram Channel</p>
-                    </div>
+        <!-- Left-Aligned Community Manifesto Section -->
+        <section class="community-section">
+            <h2 class="community-title">Community</h2>
+            
+            <div class="community-lines">
+                <!-- Line 1: Sky Blue Accent + Bold White + Serif Italic -->
+                <p class="m-line line-1">
+                    <span class="fw-bold-white">True mastery is forged through failure</span>—even if you are starting from absolute zero today, <span class="hl-sky">take that first step</span> because every mistake sharpens your <span class="serif-italic">instincts and resilience.</span>
+                </p>
+
+                <!-- Line 2: Emerald Accent + Monospace Tag -->
+                <p class="m-line line-2">
+                    In a rapidly evolving digital landscape, <span class="hl-emerald">relentless curiosity</span> is your greatest asset; dedicate yourself to <span class="mono-tag">continuous learning</span> and build skills that outlast every trend.
+                </p>
+
+                <!-- Line 3: Violet Accent + Bold White -->
+                <p class="m-line line-3">
+                    <span class="fw-bold-white">Excellence is never an accident</span>—it is the quiet result of <span class="hl-violet">disciplined execution</span>, deep focus, and refusing to quit when complex problems push you to your limits.
+                </p>
+
+                <!-- Line 4: Amber Accent + Serif Italic -->
+                <p class="m-line line-4">
+                    Individual ambition moves fast, but a <span class="hl-amber">united collective goes further</span>; surround yourself with builders, share knowledge freely, and <span class="serif-italic">elevate your craft</span> alongside our community.
+                </p>
+            </div>
+        </section>
+
+        <!-- Compact Ending Links Section -->
+        <footer class="ending-links">
+            <!-- 1. Telegram Main Channel -->
+            <div class="ending-row">
+                <div class="ending-left">
+                    <i class="fab fa-telegram-plane"></i>
+                    <span>Join our main channel <span class="ending-sub">@all_in_one_63</span></span>
                 </div>
-                <a href="https://t.me/all_in_one_63" target="_blank" class="action-btn">
-                    Join Channel &nbsp;<i class="fas fa-arrow-right"></i>
+                <a href="https://t.me/all_in_one_63" target="_blank" rel="noopener noreferrer" class="ending-right">
+                    Click Here <i class="fas fa-arrow-up-right-from-square" style="font-size: 9.5px;"></i>
                 </a>
             </div>
 
-            <div class="channel-card">
-                <div class="channel-header">
-                    <img src="fb-pic.jpg" alt="Facebook" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg'">
-                    <div class="channel-info">
-                        <h4>Parvez Profile <i class="fas fa-certificate badge-verified"></i></h4>
-                        <p>Personal Facebook</p>
-                    </div>
+            <!-- 2. GitHub Profile -->
+            <div class="ending-row">
+                <div class="ending-left">
+                    <i class="fab fa-github"></i>
+                    <span>Explore our GitHub <span class="ending-sub">alm04190-gif</span></span>
                 </div>
-                <a href="https://www.facebook.com/share/1Bj3Q5M2VH/" target="_blank" class="action-btn">
-                    Add on Facebook &nbsp;<i class="fas fa-arrow-right"></i>
+                <a href="https://github.com/alm04190-gif?tab=overview&from=2026-10-01&to=2026-10-31" target="_blank" rel="noopener noreferrer" class="ending-right">
+                    Click Here <i class="fas fa-arrow-up-right-from-square" style="font-size: 9.5px;"></i>
                 </a>
             </div>
 
-            <div class="music-player">
-                <div class="music-header">
-                    <i class="fas fa-volume-up"></i>
-                    <div class="song-title">Surah Al-Mu'minun</div>
+            <!-- 3. Personal Facebook -->
+            <div class="ending-row">
+                <div class="ending-left">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Connect on Facebook <span class="ending-sub">Official Profile</span></span>
                 </div>
-                
-                <div class="progress-bar-container">
-                    <span>00:00</span>
-                    <div class="progress-line"></div>
-                    <span>05:01</span>
-                </div>
-
-                <div class="music-controls">
-                    <i class="fas fa-step-backward"></i>
-                    <i class="fas fa-play" id="play-btn"></i>
-                    <i class="fas fa-step-forward"></i>
-                </div>
-                
-                <audio id="bg-audio" loop>
-                    <source src="https://server11.mp3quran.net/yasser/023.mp3" type="audio/mpeg">
-                </audio>
+                <a href="https://www.facebook.com/share/1Bj3Q5M2VH/" target="_blank" rel="noopener noreferrer" class="ending-right">
+                    Click Here <i class="fas fa-arrow-up-right-from-square" style="font-size: 9.5px;"></i>
+                </a>
             </div>
 
-        </div>
-    </div>
+            <!-- 4. Contact Admin -->
+            <div class="ending-row">
+                <div class="ending-left">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Contact Admin <span class="ending-sub">@Parvezhacker</span></span>
+                </div>
+                <a href="https://t.me/Parvezhacker" target="_blank" rel="noopener noreferrer" class="ending-right">
+                    Click Here <i class="fas fa-arrow-up-right-from-square" style="font-size: 9.5px;"></i>
+                </a>
+            </div>
+        </footer>
+
+    </main>
 
     <script>
-        // --- 1. Terminal Preloader Animation (LIVE FAST TYPING) ---
-        const termText = document.getElementById('term-text');
+        // Senior-Grade Realistic Terminal Boot Sequence
         const termWindow = document.getElementById('term-window');
-        
-        const commands = [
-            "[root@system ~]# ./initialize_profile.sh\n",
-            "[*] Loading system components...\n",
-            "[*] Connecting to database...\n",
-            "[*] Decrypting user credentials...\n",
-            "[+] Access Granted. Welcome Parvez."
+        const termOutput = document.getElementById('term-output');
+        const typedCmd = document.getElementById('typed-cmd');
+        const cmdCursor = document.getElementById('cmd-cursor');
+        const termBar = document.getElementById('term-bar');
+        const termPercent = document.getElementById('term-percent');
+        const termStatusLabel = document.getElementById('term-status-label');
+        const preloader = document.getElementById('preloader');
+        const mainContent = document.getElementById('main-content');
+
+        const commandToType = "./init_community --env=production";
+
+        const logSteps = [
+            {
+                time: "00.012s",
+                badge: '<span class="badge-info">[INFO]</span>',
+                text: "Verifying cryptographic handshake & node integrity...",
+                status: "VERIFYING HANDSHAKE...",
+                progress: 32,
+                delay: 190
+            },
+            {
+                time: "00.048s",
+                badge: '<span class="badge-ok">[ OK ]</span>',
+                text: "Core modules, assets & community endpoints mounted.",
+                status: "MOUNTING MODULES...",
+                progress: 68,
+                delay: 210
+            },
+            {
+                time: "00.089s",
+                badge: '<span class="badge-auth">[AUTH]</span>',
+                text: "Access granted. Rendering All In One interface...",
+                status: "SESSION READY",
+                progress: 100,
+                delay: 260
+            }
         ];
 
-        async function liveTypeTerminal() {
-            setTimeout(() => {
-                termWindow.classList.add('show-terminal');
-            }, 100);
-
-            await new Promise(r => setTimeout(r, 600)); 
-
-            for (let i = 0; i < commands.length; i++) {
-                let lineText = commands[i];
-                let lineSpan = document.createElement('span');
-                
-                if (i === commands.length - 1) lineSpan.style.color = "#ffd700"; 
-                
-                termText.appendChild(lineSpan);
-
-                for (let j = 0; j < lineText.length; j++) {
-                    lineSpan.innerHTML += lineText.charAt(j);
-                    await new Promise(r => setTimeout(r, 15)); 
-                }
-                
-                await new Promise(r => setTimeout(r, 150)); 
-            }
-
-            await new Promise(r => setTimeout(r, 600));
-            document.getElementById('preloader').style.opacity = '0';
-            
-            setTimeout(() => {
-                document.getElementById('preloader').style.display = 'none';
-                document.body.style.overflow = 'auto';
-                const mainContent = document.getElementById('main-content');
-                mainContent.style.display = 'flex';
-                setTimeout(() => mainContent.style.opacity = '1', 50);
-            }, 800);
+        function updateProgress(targetPercent, label) {
+            termBar.style.width = targetPercent + "%";
+            termPercent.textContent = targetPercent + "%";
+            if (label) termStatusLabel.textContent = label;
         }
 
-        window.onload = liveTypeTerminal;
+        async function runTerminalPreloader() {
+            setTimeout(() => termWindow.classList.add('active'), 50);
+            await new Promise(r => setTimeout(r, 280));
 
-        // --- 2. Music Player Logic ---
-        const audio = document.getElementById('bg-audio');
-        const playBtn = document.getElementById('play-btn');
-        let isPlaying = false;
-
-        playBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-            if (isPlaying) {
-                audio.pause();
-                playBtn.className = 'fas fa-play';
-                isPlaying = false;
-            } else {
-                audio.play().then(() => {
-                    playBtn.className = 'fas fa-pause';
-                    isPlaying = true;
-                }).catch(err => console.log(err));
+            // 1. Live fast typing of the initial command
+            for (let i = 0; i < commandToType.length; i++) {
+                typedCmd.textContent += commandToType.charAt(i);
+                await new Promise(r => setTimeout(r, 14));
             }
-        });
 
-        // --- 3. Click Sparkle (Particle) Effect ---
-        document.addEventListener('click', function(e) {
-            createParticles(e.clientX, e.clientY);
-        });
+            updateProgress(12, "EXECUTING SCRIPT...");
+            await new Promise(r => setTimeout(r, 140));
+            cmdCursor.style.display = 'none';
 
-        function createParticles(x, y) {
-            const particleCount = 12;
-            for (let i = 0; i < particleCount; i++) {
-                let particle = document.createElement('div');
-                particle.className = 'sparkle';
-                
-                particle.style.left = x + 'px';
-                particle.style.top = y + 'px';
-
-                let angle = Math.random() * Math.PI * 2;
-                let distance = Math.random() * 80 + 30; 
-                let tx = Math.cos(angle) * distance;
-                let ty = Math.sin(angle) * distance + 50; 
-
-                particle.style.setProperty('--tx', `${tx}px`);
-                particle.style.setProperty('--ty', `${ty}px`);
-
-                if (Math.random() > 0.5) {
-                    particle.style.backgroundColor = "#fff";
-                    particle.style.boxShadow = "0 0 10px #fff";
-                }
-
-                document.body.appendChild(particle);
-
-                setTimeout(() => {
-                    particle.remove();
-                }, 1000);
+            // 2. Render realistic system output logs
+            for (let i = 0; i < logSteps.length; i++) {
+                const step = logSteps[i];
+                const line = document.createElement('div');
+                line.className = 'term-line';
+                line.innerHTML = `<span class="term-time">[${step.time}]</span>${step.badge} ${step.text}${i === logSteps.length - 1 ? '<span class="cursor"></span>' : ''}`;
+                termOutput.appendChild(line);
+                updateProgress(step.progress, step.status);
+                await new Promise(r => setTimeout(r, step.delay));
             }
+
+            // 3. Smooth transition to main page
+            await new Promise(r => setTimeout(r, 320));
+            preloader.style.opacity = '0';
+            preloader.style.visibility = 'hidden';
+
+            setTimeout(() => {
+                preloader.style.display = 'none';
+                mainContent.classList.add('visible');
+            }, 550);
         }
+
+        window.addEventListener('DOMContentLoaded', runTerminalPreloader);
     </script>
 </body>
 </html>

@@ -3,30 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All In One — Community</title>
+    <title>All In One | Parvez</title>
     
-    <!-- Icons -->
+    <!-- Icons & Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Curated Multi-Font Pairing: Space Grotesk + Plus Jakarta Sans + Instrument Serif + JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg-pure: #000000;
-            --surface-subtle: #07090e;
-            --border-dim: rgba(255, 255, 255, 0.08);
-            --sky-accent: #38bdf8;
-            --emerald-accent: #34d399;
-            --violet-accent: #a78bfa;
-            --amber-accent: #fbbf24;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -38,478 +23,334 @@
         }
 
         body {
-            background-color: var(--bg-pure);
-            color: var(--text-primary);
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
             overflow-x: hidden;
             overflow-y: auto;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* =========================================================
-           1. SENIOR-GRADE TERMINAL PRELOADER
-           ========================================================= */
+        /* ===================================================
+           1. ORIGINAL SMOOTH TERMINAL PRELOADER (FADE TO BLACK -> SLOW OPEN)
+           =================================================== */
         #preloader {
             position: fixed;
-            inset: 0;
-            background-color: #000000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #050505;
             z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.65s;
+            transition: opacity 0.8s ease-out;
         }
 
         .terminal-window {
-            width: 100%;
-            max-width: 510px;
-            background: #06080c;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 40px rgba(56, 189, 248, 0.04);
+            width: 90%;
+            max-width: 480px;
+            background: #0d0f14;
+            border-radius: 10px;
+            border: 1px solid #262930;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
             overflow: hidden;
-            transform: translateY(14px) scale(0.97);
+            transform: scale(0.7);
             opacity: 0;
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease-out;
         }
 
-        .terminal-window.active {
-            transform: translateY(0) scale(1);
+        .terminal-window.show-terminal {
+            transform: scale(1);
             opacity: 1;
         }
 
         .terminal-header {
-            background: #0c0f17;
-            padding: 11px 16px;
+            background: #181b22;
+            padding: 10px 15px;
             display: flex;
+            gap: 8px;
             align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            border-bottom: 1px solid #262930;
         }
 
-        .mac-dots {
-            display: flex;
-            gap: 7px;
-        }
-
-        .mac-dot {
-            width: 11px;
-            height: 11px;
-            border-radius: 50%;
-        }
+        .mac-dot { width: 12px; height: 12px; border-radius: 50%; }
         .mac-dot.red { background-color: #ff5f56; }
         .mac-dot.yellow { background-color: #ffbd2e; }
         .mac-dot.green { background-color: #27c93f; }
 
         .terminal-title {
+            margin-left: auto;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             color: #64748b;
-            letter-spacing: 0.4px;
-        }
-
-        .terminal-status {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10.5px;
-            color: var(--emerald-accent);
-            background: rgba(52, 211, 153, 0.1);
-            padding: 2px 7px;
-            border-radius: 4px;
-            border: 1px solid rgba(52, 211, 153, 0.2);
         }
 
         .terminal-body {
-            padding: 20px 18px 18px;
-            min-height: 225px;
+            padding: 20px;
+            min-height: 195px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
+            font-size: 13px;
+            color: #00ff41;
             line-height: 1.8;
-            color: #cbd5e1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            white-space: pre-wrap;
         }
 
-        .term-line {
-            margin-bottom: 5px;
-            word-break: break-word;
-        }
-
-        .term-time {
-            color: #475569;
-            margin-right: 6px;
-        }
-
-        .term-prompt {
-            color: var(--sky-accent);
-            font-weight: 600;
-        }
-
-        .term-cmd {
-            color: #f8fafc;
-            font-weight: 500;
-        }
-
-        .badge-info { color: var(--sky-accent); font-weight: 600; }
-        .badge-ok { color: var(--emerald-accent); font-weight: 600; }
-        .badge-auth { color: var(--amber-accent); font-weight: 600; }
-
-        .cursor {
-            display: inline-block;
-            width: 7px;
-            height: 14px;
-            background-color: var(--sky-accent);
-            vertical-align: middle;
-            margin-left: 4px;
-            animation: blink 0.8s step-end infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        .term-footer {
-            margin-top: 16px;
-        }
-
-        .term-progress-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 10.5px;
-            color: #64748b;
-            margin-bottom: 6px;
-        }
-
-        .term-progress-wrap {
-            background: #111622;
-            border-radius: 4px;
-            height: 4px;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .term-progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #0284c7, #38bdf8, #34d399);
-            transition: width 0.18s ease-out;
-        }
-
-        /* =========================================================
-           2. MAIN INTERFACE (PURE BLACK, LEFT-ALIGNED ARCHITECTURE)
-           ========================================================= */
+        /* ===================================================
+           2. MAIN CONTENT (SLOW 1.5s FADE-IN AFTER DARKNESS)
+           =================================================== */
         #main-content {
-            max-width: 640px;
-            margin: 0 auto;
-            padding: 64px 24px 56px 24px;
+            display: none;
             opacity: 0;
-            transition: opacity 0.6s ease;
+            max-width: 580px;
+            margin: 0 auto;
+            padding: 44px 22px 48px 22px;
+            transition: opacity 1.5s ease-in;
         }
 
-        #main-content.visible {
-            opacity: 1;
-        }
-
-        /* Top Brand / Profile Section (Strictly Left-Aligned) */
+        /* Top Left-Aligned Brand Section */
         .hero-section {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             text-align: left;
-            margin-bottom: 54px;
-        }
-
-        .logo-wrapper {
-            position: relative;
-            margin-bottom: 18px;
+            margin-bottom: 38px;
         }
 
         .channel-logo {
-            width: 86px;
-            height: 86px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             object-fit: cover;
-            border: 1.5px solid rgba(255, 255, 255, 0.14);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
             background-color: #050505;
-            display: block;
+            margin-bottom: 14px;
         }
 
-        /* Metallic Silver / Grey Channel Name */
         .channel-name {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
-            letter-spacing: -0.03em;
+            letter-spacing: -0.02em;
             background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 55%, #64748b 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             color: #94a3b8;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
-        /* 3 Small Circular Transparent Buttons with Sky-Blue Logos */
+        /* 3 Small Circular Transparent Buttons with Sky-Blue Icons */
         .top-round-buttons {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .round-btn {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: transparent;
-            border: 1px solid rgba(56, 189, 248, 0.28);
+            border: 1px solid rgba(56, 189, 248, 0.3);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            color: var(--sky-accent);
-            font-size: 16px;
-            transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+            color: #38bdf8;
+            font-size: 15px;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
         }
 
         .round-btn:hover {
-            border-color: var(--sky-accent);
-            background: rgba(56, 189, 248, 0.08);
-            transform: translateY(-1px);
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
         }
 
-        /* =========================================================
-           3. COMMUNITY SECTION (MULTI-FONT & COLOR HIERARCHY)
-           ========================================================= */
+        /* ===================================================
+           3. COMMUNITY SECTION (SHORT 1-2 LINE SENTENCES)
+           =================================================== */
         .community-section {
             text-align: left;
-            margin-bottom: 56px;
+            margin-bottom: 36px;
         }
 
-        .community-title {
+        .section-heading {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 30px;
+            font-size: 25px;
             font-weight: 700;
             color: #ffffff;
-            letter-spacing: -0.03em;
-            margin-bottom: 22px;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
         }
 
         .community-lines {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-        }
-
-        .m-line {
-            font-size: 15.5px;
-            line-height: 1.75;
-            font-weight: 400;
-            padding-left: 14px;
-            border-left: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Distinct color themes & typographic accents per line */
-        .m-line.line-1 {
-            color: #cbd5e1;
-            border-left-color: var(--sky-accent);
-        }
-
-        .m-line.line-2 {
-            color: #94a3b8;
-            border-left-color: var(--emerald-accent);
-        }
-
-        .m-line.line-3 {
-            color: #cbd5e1;
-            border-left-color: var(--violet-accent);
-        }
-
-        .m-line.line-4 {
-            color: #94a3b8;
-            border-left-color: var(--amber-accent);
-        }
-
-        /* Font & Color Utility Spans for Senior Editorial Feel */
-        .fw-bold-white {
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .hl-sky {
-            font-weight: 600;
-            color: var(--sky-accent);
-        }
-
-        .hl-emerald {
-            font-weight: 600;
-            color: var(--emerald-accent);
-        }
-
-        .hl-violet {
-            font-weight: 600;
-            color: var(--violet-accent);
-        }
-
-        .hl-amber {
-            font-weight: 600;
-            color: var(--amber-accent);
-        }
-
-        .serif-italic {
-            font-family: 'Instrument Serif', Georgia, serif;
-            font-style: italic;
-            font-size: 18.5px;
-            letter-spacing: 0.01em;
-            color: #f1f5f9;
-        }
-
-        .mono-tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            font-weight: 500;
-            background: rgba(255, 255, 255, 0.06);
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #e2e8f0;
-        }
-
-        /* =========================================================
-           4. ENDING / FOOTER LINKS SECTION
-           ========================================================= */
-        .ending-links {
-            border-top: 1px solid var(--border-dim);
-            padding-top: 24px;
-            display: flex;
-            flex-direction: column;
             gap: 10px;
         }
 
-        .ending-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 11px 15px;
-            background: var(--surface-subtle);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 10px;
-            transition: border-color 0.2s ease, background-color 0.2s ease;
+        .short-line {
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: #94a3b8;
         }
 
-        .ending-row:hover {
-            border-color: rgba(56, 189, 248, 0.25);
-            background: #0b0e17;
+        .fw-white { font-weight: 700; color: #f8fafc; }
+        .c-sky { font-weight: 600; color: #38bdf8; }
+        .c-emerald { font-weight: 600; color: #34d399; }
+        .c-violet { font-weight: 600; color: #a78bfa; }
+        .c-amber { font-weight: 600; color: #fbbf24; }
+
+        .serif-word {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-style: italic;
+            font-size: 17px;
+            color: #e2e8f0;
         }
 
-        .ending-left {
+        /* ===================================================
+           4. ABOUT ME SECTION
+           =================================================== */
+        .about-section {
+            text-align: left;
+            margin-bottom: 40px;
+        }
+
+        .about-list {
             display: flex;
-            align-items: center;
-            gap: 11px;
+            flex-direction: column;
+            gap: 7px;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 13.5px;
-            color: #cbd5e1;
+            margin-bottom: 16px;
+        }
+
+        .about-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .about-label {
+            color: #94a3b8;
             font-weight: 500;
         }
 
-        .ending-left i {
-            color: var(--sky-accent);
+        .val-age {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .val-admin {
+            color: #a78bfa;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .val-skill {
+            color: #f87171;
+            font-weight: 600;
+            background: rgba(248, 113, 113, 0.1);
+            padding: 1px 7px;
+            border-radius: 4px;
+            font-size: 12.5px;
+        }
+
+        /* Green "Learn & Earn & Enjoy" */
+        .motto-line {
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 15px;
-            width: 18px;
+            font-weight: 700;
+            color: #22c55e;
+            letter-spacing: 0.4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .motto-amp {
+            color: #4ade80;
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        /* ===================================================
+           5. SMALL COMPACT LEFT-ALIGNED ENDING LINKS
+           =================================================== */
+        .ending-links {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .ending-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12.5px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .ending-item i {
+            color: #38bdf8;
+            font-size: 13px;
+            width: 15px;
             text-align: center;
         }
 
-        .ending-sub {
+        .click-here-link {
             font-family: 'JetBrains Mono', monospace;
             font-size: 11.5px;
-            color: var(--text-muted);
-            margin-left: 4px;
-        }
-
-        .ending-right {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
             font-weight: 600;
-            color: var(--sky-accent);
+            color: #38bdf8;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            background: rgba(56, 189, 248, 0.08);
-            border: 1px solid rgba(56, 189, 248, 0.18);
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-            white-space: nowrap;
+            margin-left: 2px;
+            transition: opacity 0.2s ease;
         }
 
-        .ending-right:hover {
-            background: rgba(56, 189, 248, 0.16);
-            border-color: var(--sky-accent);
-        }
-
-        @media (max-width: 480px) {
-            #main-content {
-                padding: 46px 18px 44px 18px;
-            }
-            .ending-sub {
-                display: none;
-            }
+        .click-here-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. PROFESSIONAL REALISTIC TERMINAL PRELOADER -->
+    <!-- 1. TERMINAL PRELOADER (Original Smooth Timing & Fade-to-Black Transition) -->
     <div id="preloader">
         <div class="terminal-window" id="term-window">
             <div class="terminal-header">
-                <div class="mac-dots">
-                    <div class="mac-dot red"></div>
-                    <div class="mac-dot yellow"></div>
-                    <div class="mac-dot green"></div>
-                </div>
-                <div class="terminal-title">all-in-one@node-01: ~ (zsh)</div>
-                <div class="terminal-status">TLS 1.3</div>
+                <div class="mac-dot red"></div>
+                <div class="mac-dot yellow"></div>
+                <div class="mac-dot green"></div>
+                <span class="terminal-title">root@all-in-one:~</span>
             </div>
-            <div class="terminal-body">
-                <div id="term-output">
-                    <div class="term-line">
-                        <span class="term-prompt">root@all-in-one:~#</span> 
-                        <span class="term-cmd" id="typed-cmd"></span><span class="cursor" id="cmd-cursor"></span>
-                    </div>
-                </div>
-                <div class="term-footer">
-                    <div class="term-progress-meta">
-                        <span id="term-status-label">INITIALIZING KERNEL...</span>
-                        <span id="term-percent">0%</span>
-                    </div>
-                    <div class="term-progress-wrap">
-                        <div class="term-progress-bar" id="term-bar"></div>
-                    </div>
-                </div>
-            </div>
+            <div class="terminal-body" id="term-text"></div>
         </div>
     </div>
 
-    <!-- 2. MAIN WEBSITE CONTENT -->
+    <!-- 2. MAIN WEBSITE -->
     <main id="main-content">
         
-        <!-- Left-Aligned Brand Header -->
+        <!-- Left-Aligned Logo, Silver Name & 3 Round Sky-Blue Icon Buttons -->
         <section class="hero-section">
-            <div class="logo-wrapper">
-                <!-- Uses tg-pic.jpg if present, otherwise renders crisp All In One vector emblem -->
-                <img 
-                    src="tg-pic.jpg" 
-                    alt="All In One Logo" 
-                    class="channel-logo"
-                    onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2250%22 fill=%22%23050505%22/><path d=%22M50 22 L32 62 L40 62 L50 38 L60 62 L68 62 Z%22 fill=%22%23ffffff%22/><path d=%22M38 53 L64 42%22 stroke=%22%2338bdf8%22 stroke-width=%224%22 stroke-linecap=%22round%22/><text x=%2250%22 y=%2278%22 font-family=%22sans-serif%22 font-size=%228.5%22 font-weight=%22bold%22 fill=%22%23ffffff%22 text-anchor=%22middle%22 letter-spacing=%221.2%22>ALL IN ONE</text></svg>';"
-                >
-            </div>
+            <img 
+                src="tg-pic.jpg" 
+                alt="All In One Logo" 
+                class="channel-logo"
+                onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2250%22 fill=%22%23050505%22/><path d=%22M50 22 L32 62 L40 62 L50 38 L60 62 L68 62 Z%22 fill=%22%23ffffff%22/><path d=%22M38 53 L64 42%22 stroke=%22%2338bdf8%22 stroke-width=%224%22 stroke-linecap=%22round%22/><text x=%2250%22 y=%2278%22 font-family=%22sans-serif%22 font-size=%228.5%22 font-weight=%22bold%22 fill=%22%23ffffff%22 text-anchor=%22middle%22 letter-spacing=%221.2%22>ALL IN ONE</text></svg>';"
+            >
 
-            <!-- Silver / Grey Channel Name -->
             <h1 class="channel-name">All In One</h1>
 
-            <!-- 3 Small Circular Transparent Buttons with Sky-Blue Logos -->
             <div class="top-round-buttons">
                 <a href="https://t.me/all_in_one_63" target="_blank" rel="noopener noreferrer" class="round-btn" aria-label="Telegram">
                     <i class="fab fa-telegram-plane"></i>
@@ -523,166 +364,136 @@
             </div>
         </section>
 
-        <!-- Left-Aligned Community Manifesto Section -->
+        <!-- Community Section (Short 1-2 Line Sentences Ending with a Dot) -->
         <section class="community-section">
-            <h2 class="community-title">Community</h2>
-            
+            <h2 class="section-heading">Community</h2>
             <div class="community-lines">
-                <!-- Line 1: Sky Blue Accent + Bold White + Serif Italic -->
-                <p class="m-line line-1">
-                    <span class="fw-bold-white">True mastery is forged through failure</span>—even if you are starting from absolute zero today, <span class="hl-sky">take that first step</span> because every mistake sharpens your <span class="serif-italic">instincts and resilience.</span>
+                <p class="short-line">
+                    <span class="fw-white">People learn from failure</span>, so start today even if you know <span class="c-sky">nothing</span>.
                 </p>
-
-                <!-- Line 2: Emerald Accent + Monospace Tag -->
-                <p class="m-line line-2">
-                    In a rapidly evolving digital landscape, <span class="hl-emerald">relentless curiosity</span> is your greatest asset; dedicate yourself to <span class="mono-tag">continuous learning</span> and build skills that outlast every trend.
+                <p class="short-line">
+                    Every small mistake builds <span class="c-emerald">real experience</span> and makes you <span class="serif-word">stronger</span>.
                 </p>
-
-                <!-- Line 3: Violet Accent + Bold White -->
-                <p class="m-line line-3">
-                    <span class="fw-bold-white">Excellence is never an accident</span>—it is the quiet result of <span class="hl-violet">disciplined execution</span>, deep focus, and refusing to quit when complex problems push you to your limits.
+                <p class="short-line">
+                    Stay curious and <span class="fw-white">upgrade your skills</span> every single day with <span class="c-violet">discipline</span>.
                 </p>
-
-                <!-- Line 4: Amber Accent + Serif Italic -->
-                <p class="m-line line-4">
-                    Individual ambition moves fast, but a <span class="hl-amber">united collective goes further</span>; surround yourself with builders, share knowledge freely, and <span class="serif-italic">elevate your craft</span> alongside our community.
+                <p class="short-line">
+                    Grow faster together with our <span class="c-amber">community</span> and never stop <span class="serif-word">exploring</span>.
                 </p>
             </div>
         </section>
 
-        <!-- Compact Ending Links Section -->
+        <!-- About Me Section -->
+        <section class="about-section">
+            <h2 class="section-heading">About Me</h2>
+            
+            <div class="about-list">
+                <div class="about-item">
+                    <span class="about-label">Age :</span>
+                    <span class="val-age">21</span>
+                </div>
+                <div class="about-item">
+                    <span class="about-label">Admin ID :</span>
+                    <a href="https://t.me/Parvezhacker" target="_blank" rel="noopener noreferrer" class="val-admin">@Parvezhacker</a>
+                </div>
+                <div class="about-item">
+                    <span class="about-label">Skill :</span>
+                    <span class="val-skill">No Found</span>
+                </div>
+            </div>
+
+            <!-- Green "Learn & Earn & Enjoy" -->
+            <div class="motto-line">
+                <span>Learn</span>
+                <span class="motto-amp">&amp;</span>
+                <span>Earn</span>
+                <span class="motto-amp">&amp;</span>
+                <span>Enjoy</span>
+            </div>
+        </section>
+
+        <!-- Small Compact Left-Aligned Ending Section -->
         <footer class="ending-links">
-            <!-- 1. Telegram Main Channel -->
-            <div class="ending-row">
-                <div class="ending-left">
-                    <i class="fab fa-telegram-plane"></i>
-                    <span>Join our main channel <span class="ending-sub">@all_in_one_63</span></span>
-                </div>
-                <a href="https://t.me/all_in_one_63" target="_blank" rel="noopener noreferrer" class="ending-right">
-                    Click Here <i class="fas fa-arrow-up-right-from-square" style="font-size: 9.5px;"></i>
-                </a>
+            <div class="ending-item">
+                <i class="fab fa-telegram-plane"></i>
+                <span>Join our main channel —</span>
+                <a href="https://t.me/all_in_one_63" target="_blank" rel="noopener noreferrer" class="click-here-link">Click Here</a>
             </div>
 
-            <!-- 2. GitHub Profile -->
-            <div class="ending-row">
-                <div class="ending-left">
-                    <i class="fab fa-github"></i>
-                    <span>Explore our GitHub <span class="ending-sub">alm04190-gif</span></span>
-                </div>
-                <a href="https://github.com/alm04190-gif?tab=overview&from=2026-10-01&to=2026-10-31" target="_blank" rel="noopener noreferrer" class="ending-right">
-                    Click Here <i class="fas fa-arrow-up-right-from-square" style="font-size: 9.5px;"></i>
-                </a>
+            <div class="ending-item">
+                <i class="fab fa-github"></i>
+                <span>Explore our GitHub —</span>
+                <a href="https://github.com/alm04190-gif?tab=overview&from=2026-10-01&to=2026-10-31" target="_blank" rel="noopener noreferrer" class="click-here-link">Click Here</a>
             </div>
 
-            <!-- 3. Personal Facebook -->
-            <div class="ending-row">
-                <div class="ending-left">
-                    <i class="fab fa-facebook-f"></i>
-                    <span>Connect on Facebook <span class="ending-sub">Official Profile</span></span>
-                </div>
-                <a href="https://www.facebook.com/share/1Bj3Q5M2VH/" target="_blank" rel="noopener noreferrer" class="ending-right">
-                    Click Here <i class="fas fa-arrow-up-right-from-square" style="font-size: 9.5px;"></i>
-                </a>
+            <div class="ending-item">
+                <i class="fab fa-facebook-f"></i>
+                <span>Connect on Facebook —</span>
+                <a href="https://www.facebook.com/share/1Bj3Q5M2VH/" target="_blank" rel="noopener noreferrer" class="click-here-link">Click Here</a>
             </div>
 
-            <!-- 4. Contact Admin -->
-            <div class="ending-row">
-                <div class="ending-left">
-                    <i class="fas fa-user-shield"></i>
-                    <span>Contact Admin <span class="ending-sub">@Parvezhacker</span></span>
-                </div>
-                <a href="https://t.me/Parvezhacker" target="_blank" rel="noopener noreferrer" class="ending-right">
-                    Click Here <i class="fas fa-arrow-up-right-from-square" style="font-size: 9.5px;"></i>
-                </a>
+            <div class="ending-item">
+                <i class="fas fa-user-shield"></i>
+                <span>Contact Admin —</span>
+                <a href="https://t.me/Parvezhacker" target="_blank" rel="noopener noreferrer" class="click-here-link">Click Here</a>
             </div>
         </footer>
 
     </main>
 
     <script>
-        // Senior-Grade Realistic Terminal Boot Sequence
+        // Original Smooth Live-Typing Terminal + Fade-to-Black + Slow Fade-In Transition
+        const termText = document.getElementById('term-text');
         const termWindow = document.getElementById('term-window');
-        const termOutput = document.getElementById('term-output');
-        const typedCmd = document.getElementById('typed-cmd');
-        const cmdCursor = document.getElementById('cmd-cursor');
-        const termBar = document.getElementById('term-bar');
-        const termPercent = document.getElementById('term-percent');
-        const termStatusLabel = document.getElementById('term-status-label');
-        const preloader = document.getElementById('preloader');
-        const mainContent = document.getElementById('main-content');
-
-        const commandToType = "./init_community --env=production";
-
-        const logSteps = [
-            {
-                time: "00.012s",
-                badge: '<span class="badge-info">[INFO]</span>',
-                text: "Verifying cryptographic handshake & node integrity...",
-                status: "VERIFYING HANDSHAKE...",
-                progress: 32,
-                delay: 190
-            },
-            {
-                time: "00.048s",
-                badge: '<span class="badge-ok">[ OK ]</span>',
-                text: "Core modules, assets & community endpoints mounted.",
-                status: "MOUNTING MODULES...",
-                progress: 68,
-                delay: 210
-            },
-            {
-                time: "00.089s",
-                badge: '<span class="badge-auth">[AUTH]</span>',
-                text: "Access granted. Rendering All In One interface...",
-                status: "SESSION READY",
-                progress: 100,
-                delay: 260
-            }
+        
+        const commands = [
+            "[root@system ~]# ./initialize_profile.sh\n",
+            "[*] Loading system components...\n",
+            "[*] Connecting to database...\n",
+            "[*] Verifying community nodes...\n",
+            "[+] Access Granted. Welcome to All In One."
         ];
 
-        function updateProgress(targetPercent, label) {
-            termBar.style.width = targetPercent + "%";
-            termPercent.textContent = targetPercent + "%";
-            if (label) termStatusLabel.textContent = label;
-        }
-
-        async function runTerminalPreloader() {
-            setTimeout(() => termWindow.classList.add('active'), 50);
-            await new Promise(r => setTimeout(r, 280));
-
-            // 1. Live fast typing of the initial command
-            for (let i = 0; i < commandToType.length; i++) {
-                typedCmd.textContent += commandToType.charAt(i);
-                await new Promise(r => setTimeout(r, 14));
-            }
-
-            updateProgress(12, "EXECUTING SCRIPT...");
-            await new Promise(r => setTimeout(r, 140));
-            cmdCursor.style.display = 'none';
-
-            // 2. Render realistic system output logs
-            for (let i = 0; i < logSteps.length; i++) {
-                const step = logSteps[i];
-                const line = document.createElement('div');
-                line.className = 'term-line';
-                line.innerHTML = `<span class="term-time">[${step.time}]</span>${step.badge} ${step.text}${i === logSteps.length - 1 ? '<span class="cursor"></span>' : ''}`;
-                termOutput.appendChild(line);
-                updateProgress(step.progress, step.status);
-                await new Promise(r => setTimeout(r, step.delay));
-            }
-
-            // 3. Smooth transition to main page
-            await new Promise(r => setTimeout(r, 320));
-            preloader.style.opacity = '0';
-            preloader.style.visibility = 'hidden';
-
+        async function liveTypeTerminal() {
             setTimeout(() => {
-                preloader.style.display = 'none';
-                mainContent.classList.add('visible');
-            }, 550);
+                termWindow.classList.add('show-terminal');
+            }, 100);
+
+            await new Promise(r => setTimeout(r, 600));
+
+            for (let i = 0; i < commands.length; i++) {
+                let lineText = commands[i];
+                let lineSpan = document.createElement('span');
+                
+                if (i === commands.length - 1) {
+                    lineSpan.style.color = "#38bdf8";
+                    lineSpan.style.fontWeight = "600";
+                }
+                
+                termText.appendChild(lineSpan);
+
+                for (let j = 0; j < lineText.length; j++) {
+                    lineSpan.innerHTML += lineText.charAt(j);
+                    await new Promise(r => setTimeout(r, 15));
+                }
+                
+                await new Promise(r => setTimeout(r, 150));
+            }
+
+            // Wait 600ms, then fade out preloader to black (0.8s)
+            await new Promise(r => setTimeout(r, 600));
+            document.getElementById('preloader').style.opacity = '0';
+            
+            // After screen turns dark, slowly fade in the website (1.5s)
+            setTimeout(() => {
+                document.getElementById('preloader').style.display = 'none';
+                const mainContent = document.getElementById('main-content');
+                mainContent.style.display = 'block';
+                setTimeout(() => mainContent.style.opacity = '1', 50);
+            }, 800);
         }
 
-        window.addEventListener('DOMContentLoaded', runTerminalPreloader);
+        window.onload = liveTypeTerminal;
     </script>
 </body>
 </html>
